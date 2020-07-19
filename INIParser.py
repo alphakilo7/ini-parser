@@ -306,8 +306,8 @@ def run():
 	ini.set("host:agsft-com", "server_count", 8)
 
 	# Write value to new section directly
-	ini.set("host:groots-in", "username", "grootsadmin")
-	ini.set("host:groots-in", "password", "groots@123")
+	ini.set("host:groots-in", "username", "ubuntu-user")
+	ini.set("host:groots-in", "password", "user@123987")
 
 	ini.set("baseconfig", "superuser", "dexter")
 	
