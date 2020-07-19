@@ -15,18 +15,18 @@ class KeyNotFoundError(Exception):
 class SectionExistsError(Exception):
 	pass
 
+
 class INIParser:
 	def __init__(self, filename):
 		self.__file = filename
 		self.ini = open(self.__file, 'r').read().split('\n')
 
 		self.__sections = []
-		self.__settings = dict()
+		self.__settings = {}
 		
 		self.__remove_blanks_and_comments()
 		self.__get_sects()
 		self.__get_settings()
-		# print(self.ini)
 
 	# PRIVATE FUNCTIONAL METHODS
 	def __remove_blanks_and_comments(self):
@@ -65,7 +65,7 @@ class INIParser:
 		else:
 			return self.__settings[section][key]
 
-	# SETTER METHODS
+	# SETTER METHOD
 	def set(self, section, key=None, value=None):
 		if key == None and value == None and not section in self.__sections:
 			self.__settings[section] = dict()
@@ -78,6 +78,19 @@ class INIParser:
 				self.__settings[section] = dict()
 				self.__settings[section][key] = value
 
+	# DELETE METHOD
+	def delete(self, section, key=None):
+		if key == None and not section in self.__sections:
+			raise SectionNotFoundError(f"The {section} does not exist! Operation failed!")
+		elif key == None and section in self.__sections:
+			del self.__settings[section]
+		else:
+			try:
+				del self.__settings[section][key]
+			except KeyError:
+				raise KeyNotFoundError(f"The key {key} in section {section} does not exist! Operation failed!")
+
+	# COMMIT METHOD
 	def commit(self):
 		write_file = open("up_" + self.__file, "a+")
 		write_file.truncate(0)
@@ -87,17 +100,14 @@ class INIParser:
 				write_file.write(k + "=" + v + "\n")
 			write_file.write("\n")
 
-	def test(self):
-		lis = [1, 2, 3, 4, 5]
-		lis.insert(2, 100)
-		print(lis)
-
 
 def run():
 	ini = INIParser('app.ini')
+	print(ini.get("host:warlax-co", "logger"))
 	ini.set("host:groots-in", "username", "grootsadmin")
 	ini.set("host:groots-in", "password", "groots@123")
 	ini.set("host:groots-in", "website", "www.groots.in")
+	ini.delete("baseconfig", "port")
 	print(ini.get_all())
 	ini.commit()
 
