@@ -1,11 +1,24 @@
 import os
 import re
 import sys
+import json
 
+
+class SectionNotFoundError(Exception):
+	pass
+
+
+class KeyNotFoundError(Exception):
+	pass
+
+
+class SectionExistsError(Exception):
+	pass
 
 class INIParser:
 	def __init__(self, filename):
-		self.ini = open(filename, 'r').read().split('\n')
+		self.__file = filename
+		self.ini = open(self.__file, 'r').read().split('\n')
 
 		self.__sections = []
 		self.__settings = dict()
@@ -15,11 +28,12 @@ class INIParser:
 		self.__get_settings()
 		# print(self.ini)
 
+	# PRIVATE FUNCTIONAL METHODS
 	def __remove_blanks_and_comments(self):
 		ini_t = self.ini[:]
 		self.ini.clear()
 		for line in ini_t:
-			if not line == '' and not line.lstrip()[0] == ";":
+			if not line == '' and not line.lstrip()[0] == ";" and not line.lstrip()[0] == "#":
 				self.ini.append(line)
 
 	def __get_sects(self):
@@ -36,8 +50,9 @@ class INIParser:
 				_key = line.split("=", 1)[0]
 				_val = line.split("=", 1)[1]
 				self.__settings[head][_key] = _val
-				# self.__settings[head].append(line)
+				# self.__settings[head].append(line)	
 
+	# GETTER METHODS
 	def get_sections(self):
 		return self.__sections
 
@@ -50,13 +65,41 @@ class INIParser:
 		else:
 			return self.__settings[section][key]
 
+	# SETTER METHODS
+	def set(self, section, key=None, value=None):
+		if key == None and value == None and not section in self.__sections:
+			self.__settings[section] = dict()
+		elif key == None and value == None and section in self.__sections:
+			raise SectionExistsError(f"The {section} already exists! Provide key and value pair to set.")
+		else:
+			try:
+				self.__settings[section][key] = value
+			except KeyError:
+				self.__settings[section] = dict()
+				self.__settings[section][key] = value
+
+	def commit(self):
+		write_file = open("up_" + self.__file, "a+")
+		write_file.truncate(0)
+		for sect in self.__settings.keys():
+			write_file.write("[" + sect + "]\n")
+			for k, v in self.__settings[sect].items():
+				write_file.write(k + "=" + v + "\n")
+			write_file.write("\n")
+
 	def test(self):
-		pass
+		lis = [1, 2, 3, 4, 5]
+		lis.insert(2, 100)
+		print(lis)
 
 
 def run():
 	ini = INIParser('app.ini')
-	print(ini.get("host:warlax-co"))
+	ini.set("host:groots-in", "username", "grootsadmin")
+	ini.set("host:groots-in", "password", "groots@123")
+	ini.set("host:groots-in", "website", "www.groots.in")
+	print(ini.get_all())
+	ini.commit()
 
 
 if __name__ == "__main__":
