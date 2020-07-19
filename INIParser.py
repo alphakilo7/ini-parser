@@ -16,7 +16,8 @@ class INIParser:
 		
 		self.__remove_blanks()
 		self.__get_heads()
-#		print(self.ini)
+		self.__get_settings()
+		#print(self.ini)
 
 	def __remove_blanks(self):
 		ini_t = self.ini[:]
@@ -31,15 +32,24 @@ class INIParser:
 				self.__headers.append(re.sub(r"[\[]{1}|[\]]{1}", "", line))
 
 	def __get_settings(self):
-		pass
+		for h in self.__headers:
+			self.__settings[h] = []
+
+		print(self.__settings)
 
 	def get_headers(self):
 		return self.__headers
 
+	def test(self):
+		dct = {"section1": [1, 2, 3], "section2": [4, 5, 6]}
+		dct["section1"].append(4)
+		print(dct)
+
 
 def run():
 	ini = INIParser('app.ini')
-	print(ini.get_headers())
+	#print(ini.get_headers())
+#	ini.test()
 
 
 if __name__ == "__main__":
