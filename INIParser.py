@@ -10,8 +10,12 @@ class INIParser:
 	'''
 	def __init__(self, filename):
 		self.ini = open(filename, 'r').read().split('\n')
+
+		self.__headers = []
+		self.__settings = dict()
+		
 		self.__remove_blanks()
-		self.__get_headers()
+		self.__get_heads()
 #		print(self.ini)
 
 	def __remove_blanks(self):
@@ -21,14 +25,21 @@ class INIParser:
 			if not line == '':
 				self.ini.append(line)
 
-	def __get_headers(self):
+	def __get_heads(self):
 		for line in self.ini:
 			if re.match(r"\[[a-zA-Z0-9\:_\-]+\]", line):
-				print(re.sub(r"[\[]{1}|[\]]{1}", "", line))
+				self.__headers.append(re.sub(r"[\[]{1}|[\]]{1}", "", line))
+
+	def __get_settings(self):
+		pass
+
+	def get_headers(self):
+		return self.__headers
 
 
 def run():
 	ini = INIParser('app.ini')
+	print(ini.get_headers())
 
 
 if __name__ == "__main__":
