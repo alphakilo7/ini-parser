@@ -26,7 +26,7 @@ git clone https://github.com/alphakilo7/ini-reader.git
 ```
 and done!
 Following manual will show how to use the reader in python
----
+***
 **operations.py**
 ```
 # Recommended import format
@@ -63,5 +63,5 @@ run()
 ```
 
 #### Few Limitations (as of now)
-1. As of now, the in file comments are tracked, but in the final output, it is likely to be misplaced. Please use with caution.
+1. As of now, the in file comments are tracked, but in the final output, they are likely to be misplaced. Please use with caution.
 2. The comments after key-value pairs are not read as comments but are considered as part of value of the key. Highly recommended not to use such style of commenting.
