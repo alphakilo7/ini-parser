@@ -5,10 +5,6 @@ import json
 
 # TODO
 #   1.
-#     method > to_json$public
-#     params > filename:str
-#	  returns > None
-#   2.
 #     method > to_yml$public
 #     params > filename:str
 #     returns > None
@@ -288,6 +284,24 @@ class INIParser:
 			write_file.write(line)
 		write_file.close()
 
+	def to_json(self, filename="output.json", indent=2):
+		'''
+		Write INI file contents to a JSON file. JSON can be imported easily in many other languages.
+		method >
+			to_json$public
+		params >
+			filename:str=output.json - name of the file to write contents in. By default, writes to output.json
+			indent:int=2 - the indentation to be given in the json files to pretty-print
+		returns >
+			None
+		raises >
+			None
+		'''
+		inijson=json.dumps(self.__settings, indent=indent)
+		outfile=open(filename, "w")
+		outfile.write(inijson)
+		outfile.close()
+
 
 def run():
 	'''
@@ -316,6 +330,9 @@ def run():
 
 	# Commit the changes to the file
 	ini.commit()
+
+	# Get the output in json file
+	ini.to_json("Filename.json", indent=4)
 
 
 if __name__ == "__main__":
