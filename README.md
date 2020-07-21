@@ -1,6 +1,6 @@
 # INI Parser
 **UPDATE!**
-**v1.1alpha**
+**v1.1alpha**  
 ***WITH INIParser, ONE CAN NOW GET THE INI CONFIGURATION AS OUTPUT IN JSON FILE ALSO.***
 
 
