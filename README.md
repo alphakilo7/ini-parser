@@ -1,6 +1,12 @@
 # INI Parser
+**UPDATE!**
+**v1.1alpha**
+***WITH INIParser, ONE CAN NOW GET THE INI CONFIGURATION AS OUTPUT IN JSON FILE ALSO.***
+
+
 ## Introduction
-`*.ini` files are an important part of configuration file types. Along with `*.conf`, `*.cfg`, `*.yml`, `ini` files are also used at a large extent. Reading the values of such files is crucial while playing with configurations. So, the **INIParser** gives a wrapper class for Python to use the `ini` files in Python. **INIParser** allows to read, write, update, delete the settings in such files. Also it is light-weight and end-user friendly. Anyone with minimum exposure to Python can use this. Also it is safe for the files as it allows to create backup of the files and avoid loss of data during the any file operations.
+`*.ini` files are an important part of configuration file types. Along with `*.conf`, `*.cfg`, `*.yml`, `ini` files are also used at a large extent. Reading the values of such files is crucial while playing with configurations. So, the **INIParser** gives a wrapper class for Python to use the `ini` files in Python. **INIParser** allows to read, write, update, delete the settings in such files. Also it is light-weight and end-user friendly. Anyone with minimum exposure to Python can use this. Also it is safe for the files as it allows to create backup of the files and avoid loss of data during the any file operations.  
+
 
 ### Sample `ini` file
 ```
@@ -57,6 +63,10 @@ def run():
 
 	# AND FINALLY, DO NOT FORGET TO COMMIT THE CHANGES TO THE FILE
 	ini.commit()
+
+	# After the commit, one can get the configuration contents in the JSON format also
+	ini.to_json("output-file.json", indent=4)
+
 
 run()
 
